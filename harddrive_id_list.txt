@@ -1,0 +1,114 @@
+# Disk ID | UUID | LABEL | Name | Details 
+/dev/disk/by-id/nvme-ADATA_SX6000PNP_2L072LQN4K2C_1-part3   | 227a4a7b-2903-4090-9070-446e6e776c53      | /             | NVME SSD      | ADATA 500 GB SSD  
+                                                            |                                           | /mnt/disk1    | HGST10_1      | 10TB HUH721010ALE601
+                                                            |                                           | /mnt/disk2    | HGST10_2      | 10TB HUH721010ALE601
+                                                            |                                           | /mnt/disk3    | HGST10_3      | 10TB HUH721010ALE601
+                                                            |                                           | /mnt/disk4    | HGST10_4      | 10TB HUH721010ALE601
+/dev/disk/by-id/usb-External_USB3.0_0000007788FC-0:1        | 2e70f435-dd10-4596-bcee-eebd39dbb886      | /mnt/disk5    | 10Elements    | 10TB Elements Drive
+/dev/disk/by-id/usb-External_USB3.0_0000007788FC-0:3        | 4d00a635-cd2b-4863-8871-65454514cff3      | /mnt/disk6    | BIGElements   | 14TB Elements Drive
+/dev/disk/by-id/wwn-0x5000cca2abeabb50                      | de745fe0-8d75-4326-a82f-9214a8f7f135      | /mnt/parity1  | 2023Elements  | 18TB Elements Drive
+                                                            |                                           | /mnt/parity2  | 2024Elements  | 18TB Elements Drive
+
+#OLD DISKs - Disk ID | UUID | LABEL | Name | Details
+/dev/disk/by-id/usb-External_USB3.0_0000007788FC-0:1        | 975a0f5f-7f90-4cc3-b12b-fbb2d62286d0      | not_mounted   | 4White        | 4TB Elements Drive
+/dev/disk/by-id/usb-External_USB3.0_0000007788FC-0:4        | d5bc422d-e523-42da-be3a-0f8dd7c4b966      | not_mounted   | IronWolf      | Seagate Ironwolf 6TB 
+/dev/disk/by-id/usb-External_USB3.0_0000007788FC-0:0        | e167dbe1-bf39-455f-9fc8-e7e93bf38c2b      | not_mounted   | 3Red          | 4TB WD Red Drive
+/dev/disk/by-id/usb-External_USB3.0_0000007788FC-0:2        | c9c3d861-79ad-4f8d-8e9b-6697d67f3123      | not_mounted   | NewCuda       | 8TB Seagate Barracuda
+
+lattner@Sambar:/mnt$ tree 
+/mnt
+ ├── disk1  10TB
+ │   └── media
+ │       └── movies
+ ├── disk2  10TB
+ │   └── media
+ │       └── movies
+ ├── disk3  10TB
+ │   └── media
+ │       └── television
+ ├── disk4  10TB 
+ │   └── media
+ │       └── television
+ ├── disk5  10TB
+ │   └── media
+ │       └── television
+ ├── disk6  14TB
+ │   ├── backup
+ │   ├── blackhole
+ │   ├── media
+ │   │   ├── books
+ │   │   ├── comics
+ │   │   ├── movies
+ │   │   ├── music
+ │   │   ├── pictures
+ │   │   └── media/to_be_named
+ │   └── Turn A Ephemera
+ │
+ └── storage
+     ├── backup
+     ├── blackhole
+     ├── media
+     │   ├── books
+     │   ├── comics
+     │   ├── movies
+     │   ├── music
+     │   ├── pictures
+     │   ├── television
+     │   └── media/to_be_named
+     └── Turn A Ephemera
+
+# Serval Layout
+# Disk ID | UUID | LABEL | Name | Details 
+/dev/disk/by-id/nvme-ADATA_SX6000PNP_2L072LQN4K2C_1-part3   | 227a4a7b-2903-4090-9070-446e6e776c53      | /             | NVME SSD      | ADATA 500 GB SSD  
+/dev/disk/by-id/usb-External_USB3.0_0000007788FC-0:4        | d5bc422d-e523-42da-be3a-0f8dd7c4b966      | /mnt/disk5    | IronWolf      | Seagate Ironwolf 6TB 
+/dev/disk/by-id/usb-External_USB3.0_0000007788FC-0:0        | e167dbe1-bf39-455f-9fc8-e7e93bf38c2b      | /mnt/disk1    | 3Red          | 4TB WD Red Drive
+/dev/disk/by-id/usb-External_USB3.0_0000007788FC-0:2        | c9c3d861-79ad-4f8d-8e9b-6697d67f3123      | /mnt/disk3    | NewCuda       | 8TB Seagate Barracuda
+/dev/disk/by-id/usb-External_USB3.0_0000007788FC-0:1        | 2e70f435-dd10-4596-bcee-eebd39dbb886      | /mnt/disk2    | 10Elements    | 10TB Elements Drive
+/dev/disk/by-id/usb-External_USB3.0_0000007788FC-0:3        | 4d00a635-cd2b-4863-8871-65454514cff3      | /mnt/disk4    | BIGElements   | 14TB Elements Drive
+/dev/disk/by-id/wwn-0x5000cca2abeabb50                      | de745fe0-8d75-4326-a82f-9214a8f7f135      | /mnt/parity1  | 2023Elements  | 18TB Elements Drive
+                                                            |                                           | /mnt/parity2  | 2024Elements  | 18TB Elements Drive
+                                                            |                                           |               | HGST10_1      | 10TB HUH721010ALE601
+                                                            |                                           |               | HGST10_2      | 10TB HUH721010ALE601
+                                                            |                                           |               | HGST10_3      | 10TB HUH721010ALE601
+                                                            |                                           |               | HGST10_4      | 10TB HUH721010ALE601
+
+#OLD DISKs - Disk ID | UUID | LABEL | Name | Details
+/dev/disk/by-id/usb-External_USB3.0_0000007788FC-0:1 | 975a0f5f-7f90-4cc3-b12b-fbb2d62286d0     | /mnt/disk     | 4White       | 4TB Elements Drive
+
+
+lattner@Serval:/mnt$ tree 
+/mnt
+ ├── disk1                  0TB/4TB
+ │ 
+ ├── disk2                  4.3TB/10TB
+ │   └── media              4.3TB
+ │       ├── books          0TB
+ │       ├── comics         0TB
+ │       ├── music          .1TB
+ │       └── television     4.2TB
+ │
+ ├── disk3                  0TB/8TB
+ │
+ ├── disk4                  8.8TB/14TB 
+ │  ├── backup              0TB
+ │  ├── blackhole           1.3TB
+ │  ├── media               7.3TB
+ │  │    ├── movies         7.3TB
+ │  │    ├── pictures       0TB
+ │  │    └── to_be_named    0TB
+ │  └── Turn A Ephemera     0TB
+ │
+ ├── disk5                  0TB/6TB
+ │
+ └── storage
+     ├── backup
+     ├── blackhole
+     ├── media
+     │   ├── books
+     │   ├── comics
+     │   ├── movies
+     │   ├── music
+     │   ├── pictures
+     │   ├── television
+     │   └── to_be_named
+     ├── Turn A Ephemera

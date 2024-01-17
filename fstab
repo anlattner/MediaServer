@@ -1,0 +1,24 @@
+# /etc/fstab: static file system information.
+#
+# Use 'blkid' to print the universally unique identifier for a
+# device; this may be used with UUID= as a more robust way to name devices
+# that works even if disks are added and removed. See fstab(5).
+#
+# <file system> <mount point>   <type>  <options>       <dump>  <pass>
+#
+# Primary Hard Drive
+# / was on /dev/nvme0n1p3 during installation
+UUID=227a4a7b-2903-4090-9070-446e6e776c53 			/               ext4    errors=remount-ro 	0       1
+# /boot/efi was on /dev/nvme0n1p2 during installation
+UUID=6D6D-43B3  						/boot/efi       vfat    umask=0077		0       1
+/swapfile                                 			none            swap    sw              	0       0
+#
+# Storage Hard Drives
+/dev/disk/by-id/wwn-0x5000cca2abeabb50-part1			/mnt/parity1	ext4	defaults		0	0
+/dev/disk/by-id/usb-External_USB3.0_0000007788FC-0:0-part1	/mnt/disk1	ext4	defaults		0	0
+/dev/disk/by-id/usb-External_USB3.0_0000007788FC-0:1-part1	/mnt/disk2	ext4	defaults		0	0
+/dev/disk/by-id/usb-External_USB3.0_0000007788FC-0:2-part1	/mnt/disk3	ext4	defaults		0	0
+/dev/disk/by-id/usb-External_USB3.0_0000007788FC-0:3-part1	/mnt/disk4	ext4	defaults		0	0
+/dev/disk/by-id/usb-External_USB3.0_0000007788FC-0:4-part1	/mnt/disk5	ext4	defaults		0	0
+
+/mnt/disk* /mnt/storage fuse.mergerfs defaults,nonempty,allow_other,use_ino,cache.files=off,moveonenospc=true,dropcacheonclose=true,minfreespace=200G,fsname=mergerfs 0 0
