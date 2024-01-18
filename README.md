@@ -17,7 +17,7 @@ This was built on top of a clean Ubuntu install with Docker, Docker-Compose and 
     sudo dpkg -i mergerfs_*$release_type.deb
     ```
     
-3. Current Hard drives are identified in <link>  
+3. Current Hard drives are identified in [Harddrive](harddrive_id_list.txt) 
     1. If new hard drives are added, they need to be identified
         
         ```bash
