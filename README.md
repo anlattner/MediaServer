@@ -59,7 +59,7 @@ This was built on top of a clean Ubuntu install with Docker, Docker-Compose and 
     mkdir /mnt/storage # this will be the main mergerfs mountpoint
     ```
     
-5. Replace `/etc/fstab` with fstab from github
+5. Replace `/etc/fstab` with [fstab from github](Config/fstab)
     1. Add any additional drives following pattern from <link>
     2. MergeFS setup at bottom of fstab
 6. Mount and validate fstab
