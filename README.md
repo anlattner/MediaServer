@@ -1,6 +1,6 @@
 # A Guide to Installation
 
-This meant to document the installation of my media server stack. Based off of : . Underlying infrastructure is Ubuntu with MergeFS and SnapRaid providing a single mount point for storage and periodic snapshot of data. Applications are then ran in docker via docker-compose on top of this data store. 
+This meant to document the installation of my media server stack. Based off of [Perfect Media Server](https://perfectmediaserver.com/blog/) . Underlying infrastructure is Ubuntu with MergeFS and SnapRaid providing a single mount point for storage and periodic snapshot of data. Applications are then ran in docker via docker-compose on top of this data store. 
 
 This was built on top of a clean Ubuntu install with Docker, Docker-Compose and Samba already installed (via apt). Any configuration type files are included in this repository along with instructions. For any backups/reinstallations a manual copy of files in opt and var locations would be needed. 
 
