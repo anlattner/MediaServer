@@ -1,0 +1,1 @@
+Commands for compiling ffmpeg with VAMPF ```./configure --enable-gpl --enable-libx264 --enable-libx265 --enable-nonfree --enable-libvmaf --enable-version3 --enable-libmfx --enable-vaapi --enable-opencl --enable-libvorbis --enable-libvpx --enable-libdrm --cpu=native --enable-libfdk-aac --extra-libs=-lpthread```
