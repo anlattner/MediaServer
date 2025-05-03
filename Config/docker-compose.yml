@@ -1,0 +1,348 @@
+services:
+
+# Most services follow a similar pattern for integration. Config data is stored under /opt/appdata/APPLICATION_NAME and ports are mapped through without changes
+
+# Plex and Plex Monitoring
+
+  plex:
+    image: plexinc/pms-docker
+    container_name: plex
+    volumes:
+      - /opt/appdata/plex:/config
+      - /mnt/storage:/data
+    network_mode: host
+    restart: always
+    environment:
+      - PUID=1000
+      - GUID=1000
+      - TZ=America/Denver
+      - PLEX_CLAIM=claim-VH4XYkwytTP2JP5sXQB4
+      - HOSTNAME="Sambar"
+    devices:
+      - /dev/dri:/dev/dri
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.plex.rule=Host(`plex.latt.party`)
+      - traefik.http.routers.plex.entrypoints=websecure
+      - traefik.http.routers.plex.tls.certresolver=cloudflare
+
+  tautulli:
+    image: lscr.io/linuxserver/tautulli:latest
+    container_name: tautulli
+    environment:
+      - PUID=1000
+      - GUID=1000
+      - TZ=America/Denver
+    volumes:
+      - /opt/appdata/tautulli:/config
+      - /opt/appdata/Library/Applications\ Support/Plex\ Media\ Server/Logs:/logs:ro
+    ports:
+      - 8181:8181
+    links:
+      - plex
+    restart: always
+
+  kometa:
+    image: lscr.io/linuxserver/kometa:latest
+    container_name: kometa
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Denver
+      - KOMETA_CONFIG=/config/config.yml #optional
+      - KOMETA_TIME=03:00 #optional
+      - KOMETA_RUN=False #optional
+      - KOMETA_TEST=False #optional
+      - KOMETA_NO_MISSING=False #optional
+    volumes:
+      - /opt/appdata/kometa/config:/config
+    restart: unless-stopped
+
+# -ARR Stack (Radarr for Movies, Sonarr for TV, Lidarr for Music, Overseerr for Requests, Bazarr for Subtitles)
+
+  radarr:
+    image: lscr.io/linuxserver/radarr:latest
+    container_name: radarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/London
+    volumes:
+      - /opt/appdata/radarr:/config
+      - /mnt/storage/media/movies:/movies #Primary Storage Location
+      - /mnt/nvme1/syncthing/:/home #Temporary Download Location
+    ports:
+      - 7878:7878
+    restart: unless-stopped
+
+  sonarr:
+    image: lscr.io/linuxserver/sonarr:latest
+    container_name: sonarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/London
+    volumes:
+      - /opt/appdata/sonarr:/config
+      - /mnt/storage/media/television/:/television #Primary Storage Location
+      - /mnt/nvme1/syncthing/:/home #Temporary Download Location
+    ports:
+      - 8989:8989
+    restart: unless-stopped
+
+  lidarr:
+    image: lscr.io/linuxserver/lidarr:latest
+    container_name: lidarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Denver
+    volumes:
+      - /opt/appdata/lidarr:/config
+      - /mnt/storage/media/beets_library:/music #Primary Storage Location
+      - /mnt/nvme1/syncthing/:/home #Temporary Download Location
+      - /opt/appdata/lidarr/extended/custom-services:/custom-services.d
+      - /opt/appdata/lidarr/extended/custom-cont-init:/custom-cont-init.d
+    ports:
+      - 8686:8686
+    restart: unless-stopped
+
+  overseerr:
+    image: lscr.io/linuxserver/overseerr:latest
+    container_name: overseerr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Denver
+    volumes:
+      - /opt/appdata/overseerr:/config
+    ports:
+      - 5055:5055
+    restart: unless-stopped
+
+  bazarr:
+    image: lscr.io/linuxserver/bazarr:latest
+    container_name: bazarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Denver
+    volumes:
+      - /opt/appdata/bazarr:/config
+      - /mnt/storage/media/movies:/movies
+      - /mnt/storage/media/television/:/television
+    ports:
+      - 6767:6767
+    restart: unless-stopped
+
+# Media Management (Not -ARR)
+
+  ubooquity:
+    image: lscr.io/linuxserver/ubooquity:latest
+    container_name: ubooquity
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+      - MAXMEM=
+    volumes:
+      - /opt/appdata/ubooquity:/config
+      - /mnt/storage/media/books/*:/books
+      - /mnt/storage/media/comics/*:/comics
+      - /mnt/storage/media/:/files
+    ports:
+      - 2202:2202
+      - 2203:2203
+    restart: unless-stopped
+
+  calibre:
+    image: lscr.io/linuxserver/calibre:latest
+    container_name: calibre
+    security_opt:
+      - seccomp:unconfined #optional
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+      - PASSWORD= #optional
+      - CLI_ARGS= #optional
+    volumes:
+      - /opt/appdata/calibre:/config
+      - /mnt/storage/media:/media
+    ports:
+      - 8083:8080
+      - 8282:8181
+      - 8082:8081
+    restart: unless-stopped
+
+  beets:
+    image: lscr.io/linuxserver/beets:latest
+    container_name: beets
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+    volumes:
+      - /opt/appdata/beets:/config
+      - /mnt/storage/media/music:/music
+      - /mnt/storage/media/beets_library:/beets_library
+      - /home/lattner/Music:/downloads
+    ports:
+      - 8337:8337
+    restart: unless-stopped
+
+  auto-m4b:
+    image: seanap/auto-m4b
+    container_name: auto-m4b
+    volumes:
+      - /opt/appdata/auto-m4b:/config
+      - /mnt/nvme1/audiobook_merge:/temp
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - CPU_CORES=2
+      - SLEEPTIME=1m
+      - MAKE_BACKUP=Y
+
+# Download Tools
+
+  syncthing:
+    image: lscr.io/linuxserver/syncthing:latest
+    container_name: syncthing
+    hostname: syncthing
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Denver
+    volumes:
+      - /opt/appdata/syncthing:/config
+      - /mnt/nvme1/syncthing/:/data1
+    ports:
+      - 8384:8384
+      - 22000:22000/tcp
+      - 22000:22000/udp
+      - 21027:21027/udp
+    restart: unless-stopped
+
+  jackett:
+    image: lscr.io/linuxserver/jackett:latest
+    container_name: jackett
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Denver
+      - AUTO_UPDATE=true
+      - RUN_OPTS=<run options here> #optional
+    volumes:
+      - /opt/appdata/jackett:/config
+      - /mnt/storage/blackhole:/downloads
+    ports:
+      - 9117:9117
+    restart: unless-stopped
+
+  prowlarr:
+    image: lscr.io/linuxserver/prowlarr:latest
+    container_name: prowlarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Denver
+    volumes:
+      - /opt/appdata/prowlarr/:/config
+    ports:
+      - 9696:9696
+    restart: unless-stopped
+
+  slskd:
+    image: slskd/slskd
+    container_name: slskd
+    ports:
+      - 5030:5030
+      - 5031:5031
+      - 50300:50300
+    environment:
+      - SLSKD_REMOTE_CONFIGURATION=true
+    volumes:
+      - /opt/appdata/slskd:/app
+      - /home/lattner/slskd:/data1
+      - /mnt/storage/media/books:/books
+      - /mnt/storage/media/comics:/comics
+      - /mnt/storage/media/movies:/movies
+      - /mnt/storage/media/music:/music
+      - /mnt/storage/media/television:/television
+    restart: always
+
+  letterboxd-list-radarr:
+      image: screeny05/letterboxd-list-radarr:latest
+      container_name: letterboxd-radarr
+      ports:
+          - 5000:5000
+      environment:
+          - REDIS_URL=redis://redis:6379
+      depends_on:
+          - redis
+  redis:
+      image: redis:6.0
+      container_name: redis_6.0
+    
+# Other Tools
+  traefik:
+    image: traefik
+    container_name: tr
+    volumes:
+      - /home/lattner/appdata/traefik/letsencrypt:/letsencrypt
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    ports:
+      - 80:80
+      - 8080:8080
+      - 443:443
+    environment:
+      - CLOUDFLARE_EMAIL=anlattner@gmail.com
+      - CLOUDFLARE_API_KEY=0eb64b6797ace48fd270f4e70e589edbb8585
+    command:
+      - --api.insecure=true
+      - --providers.docker=true
+      - --entrypoints.web.address=:80
+      - --entrypoints.web.http.redirections.entryPoint.to=websecure
+      - --entrypoints.web.http.redirections.entryPoint.scheme=https
+      - --entrypoints.websecure.address=:443
+      - --certificatesresolvers.cloudflare.acme.dnschallenge=true
+      - --certificatesresolvers.cloudflare.acme.dnschallenge.provider=cloudflare
+      - --certificatesresolvers.cloudflare.acme.email=anlattner@gmail.com
+      - --certificatesresolvers.cloudflare.acme.storage=/letsencrypt/acme.json
+  nginx:
+    image: nginx
+    container_name: nginx-test
+    labels:
+      - traefik.http.routers.nginx.rule=Host(`nginx.latt.party`)
+      - traefik.http.routers.nginx.tls.certresolver=cloudflare
+
+  homeassistant:
+    image: lscr.io/linuxserver/homeassistant:latest
+    container_name: homeassistant
+    network_mode: host
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+    volumes:
+      - /opt/appdata/homeassistant:/config
+    ports:
+      - 8123:8123 #optional
+#    devices:
+#      - /path/to/device:/path/to/device #optional
+    restart: unless-stopped
+
+#  heimdall:
+#    image: lscr.io/linuxserver/heimdall:latest
+#    container_name: heimdall
+#    environment:
+#      - PUID=1000
+#      - PGID=1000
+#      - TZ=Etc/UTC
+#    volumes:
+#      - /opt/appdata/heimdall:/config
+#    ports:
+#      - 80:80
+#      - 443:443
+#    restart: unless-stopped
