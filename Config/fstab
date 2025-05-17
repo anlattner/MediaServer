@@ -7,18 +7,29 @@
 # <file system> <mount point>   <type>  <options>       <dump>  <pass>
 #
 # Primary Hard Drive
-# / was on /dev/nvme0n1p3 during installation
-UUID=227a4a7b-2903-4090-9070-446e6e776c53 			/               ext4    errors=remount-ro 	0       1
-# /boot/efi was on /dev/nvme0n1p2 during installation
-UUID=6D6D-43B3  						/boot/efi       vfat    umask=0077		0       1
-/swapfile                                 			none            swap    sw              	0       0
+# was on /dev/nvme0n1p2 during installation
+/dev/disk/by-id/nvme-HP_SSD_EX900_Plus_1TB_HBSE43341700397-part2 /               ext4    errors=remount-ro      0       1
+#
+# Secondary Hard Drive
+# was on /dev/nvme1n1 during installation
+/dev/disk/by-id/nvme-addlink_M.2_PCIE_G4x4_NVMe_5063193C0C4700002068_1  /mnt/nvme1              ext4    defaults                0       0
 #
 # Storage Hard Drives
-/dev/disk/by-id/wwn-0x5000cca2abeabb50-part1			/mnt/parity1	ext4	defaults		0	0
-/dev/disk/by-id/usb-External_USB3.0_0000007788FC-0:0-part1	/mnt/disk1	ext4	defaults		0	0
-/dev/disk/by-id/usb-External_USB3.0_0000007788FC-0:1-part1	/mnt/disk2	ext4	defaults		0	0
-/dev/disk/by-id/usb-External_USB3.0_0000007788FC-0:2-part1	/mnt/disk3	ext4	defaults		0	0
-/dev/disk/by-id/usb-External_USB3.0_0000007788FC-0:3-part1	/mnt/disk4	ext4	defaults		0	0
-/dev/disk/by-id/usb-External_USB3.0_0000007788FC-0:4-part1	/mnt/disk5	ext4	defaults		0	0
+/dev/disk/by-id/ata-WDC_WD180EDGZ-11BLDS0_8LHRD64N-part1        /mnt/parity1    ext4    defaults                0       0
+/dev/disk/by-id/ata-WDC_WD180EDGZ-11B2DA0_2JK103KD-part1        /mnt/parity2    ext4    defaults                0       0
+/dev/disk/by-id/ata-HUH721010ALE601_7JKRYGAC-part1              /mnt/disk1      ext4    defaults                0       0
+/dev/disk/by-id/ata-HUH721010ALE601_1SG4Z2UZ-part1              /mnt/disk2      ext4    defaults                0       0
+/dev/disk/by-id/ata-HUH721010ALE601_7JJGGXRC-part1              /mnt/disk3      ext4    defaults                0       0
+/dev/disk/by-id/ata-HUH721010ALE601_7JKS07RC-part1              /mnt/disk4      ext4    defaults                0       0
+/dev/disk/by-id/ata-WDC_WD100EDAZ-11F3RA0_D5GLY14L-part1        /mnt/disk5      ext4    defaults                0       0
+/dev/disk/by-id/ata-WDC_WD140EDGZ-11B1PA0_9MHXVN3U-part1        /mnt/disk6      ext4    defaults                0       0
+/dev/disk/by-id/scsi-35000c500d89f79d3-part1                    /mnt/disk7      ext4    defaults
+/dev/disk/by-id/scsi-35000c500d8a721bf-part1                    /mnt/disk8      ext4    defaults
+/dev/disk/by-id/scsi-35000039ce86b62e9-part1                    /mnt/disk9      ext4    defaults
+
+#UUID=975a0f5f-7f90-4cc3-b12b-fbb2d62286d0                      /mnt/4white     ext4    defaults,nofail         0       0
+#UUID=e167dbe1-bf39-455f-9fc8-e7e93bf38c2b                      /mnt/4red       ext4    defaults,nofail         0       0
+#UUID=d5bc422d-e523-42da-be3a-0f8dd7c4b966                      /mnt/ironwolf   ext4    defaults,nofail         0       0
+
 
 /mnt/disk* /mnt/storage fuse.mergerfs defaults,nonempty,allow_other,use_ino,cache.files=off,moveonenospc=true,dropcacheonclose=true,minfreespace=200G,fsname=mergerfs 0 0
